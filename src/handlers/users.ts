@@ -6,7 +6,9 @@ const index = async (_request: Request, response: Response): Promise<void> => {
   try {
     const users = await store.index();
     response.json(users);
-  } catch (err: any) {
+  } catch (
+    err: any // error can be of unknown type hence any used
+  ) {
     response.status(400);
     response.json({ error: err.message });
   }
@@ -17,7 +19,9 @@ const show = async (request: Request, response: Response): Promise<void> => {
   try {
     const user = await store.show(id);
     response.json(user);
-  } catch (err: any) {
+  } catch (
+    err: any // error can be of unknown type hence any used
+  ) {
     response.status(404);
     response.json({ error: err.message });
   }
@@ -34,7 +38,9 @@ const create = async (request: Request, response: Response): Promise<void> => {
     const createdUser: User = await store.create(user);
     response.status(201);
     response.json(createdUser);
-  } catch (err: any) {
+  } catch (
+    err: any // error can be of unknown type hence any used
+  ) {
     response.status(400);
     response.json({ error: err.message });
   }

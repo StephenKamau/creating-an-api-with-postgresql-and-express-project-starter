@@ -8,7 +8,9 @@ const currentOrder = async (req: Request, res: Response): Promise<void> => {
     const userId = parseInt(req.params.userId);
     const activeOrder = await ordersStore.currentOrder(userId);
     res.json(activeOrder);
-  } catch (err: any) {
+  } catch (
+    err: any //  error can be of unknown type hence any used
+  ) {
     res.status(400);
     res.json({ error: err.message });
   }
@@ -22,7 +24,9 @@ const completeOrders = async (req: Request, res: Response): Promise<void> => {
       orderStatus
     );
     res.json(completedOrders);
-  } catch (err: any) {
+  } catch (
+    err: any // error can be of unknown type hence any used
+  ) {
     res.status(400);
     res.json({ error: err.message });
   }
@@ -39,7 +43,9 @@ const create = async (req: Request, res: Response): Promise<void> => {
     };
     const createdOrder = await ordersStore.create(order);
     res.json(createdOrder);
-  } catch (err: any) {
+  } catch (
+    err: any // error can be of unknown type hence any used
+  ) {
     res.status(400);
     res.json({ error: err.message });
   }

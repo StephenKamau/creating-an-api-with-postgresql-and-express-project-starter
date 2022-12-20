@@ -7,7 +7,9 @@ const index = async (req: Request, res: Response): Promise<void> => {
   try {
     const products = await productStore.index();
     res.json(products);
-  } catch (err: any) {
+  } catch (
+    err: any // error can be of unknown type hence any used
+  ) {
     res.status(400);
     res.json({ error: err.message });
   }
@@ -18,7 +20,9 @@ const show = async (req: Request, res: Response): Promise<void> => {
     const id = parseInt(req.params.id);
     const product = await productStore.show(id);
     res.json(product);
-  } catch (err: any) {
+  } catch (
+    err: any // error can be of unknown type hence any used
+  ) {
     res.status(400);
     res.json({ error: err.message });
   }
@@ -35,7 +39,9 @@ const create = async (req: Request, res: Response): Promise<void> => {
     const createdProduct = await productStore.create(product);
     res.status(201);
     res.json(createdProduct);
-  } catch (err: any) {
+  } catch (
+    err: any // error can be of unknown type hence any used
+  ) {
     res.status(400);
     res.json({ error: err.message });
   }
@@ -49,7 +55,9 @@ const productsByCategory = async (
     const category = req.params.category;
     const product = await productStore.productsByCategory(category);
     res.json(product);
-  } catch (err: any) {
+  } catch (
+    err: any // error can be of unknown type hence any used
+  ) {
     res.status(400);
     res.json({ error: err.message });
   }
