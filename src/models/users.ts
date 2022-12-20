@@ -55,15 +55,45 @@ export class UserStore {
     async show(id: number): Promise<User> {
         try {
             const conn = await client.connect();
-            const sql = "SELECT id, firstName,lastName FROM users WHERE id = ($1)";
+            const sql = "SELECT id, firstname,lastname FROM users WHERE id = ($1)";
             const result = await conn.query(sql, [id]);
             conn.release();
-            if (result.rows.length < 1) {
-                throw new Error(`User not found`);
-            }
             return result.rows[0];
         } catch (err) {
             throw new Error(`Unable to fetch user with id: ${id}. ${err}`);
+        }
+    }
+
+    async put(user: User): Promise<User> {
+        try {
+            const conn = await client.connect();
+            const sql: string =
+                "UPDATE users SET firstname=($1), lastname=($2) WHERE id=($3)";
+//            const passwordDigest: string = bcrypt.hashSync(
+//                user.password! + SALT,
+//                parseInt(SALT_ROUNDS!)
+//            );
+            const result = await conn.query(sql, [
+                user.firstname,
+                user.lastname,
+                user.id
+            ]);
+            conn.release();
+            return result.rows[0];
+        } catch (err) {
+            throw new Error(`Unable to update ${user.firstname}. ${err}`);
+        }
+    }
+
+    async delete(id: number): Promise<User> {
+        try {
+            const conn = await client.connect();
+            const sql = "DELETE FROM users WHERE id = ($1)";
+            const result = await conn.query(sql, [id]);
+            conn.release();
+            return result.rows[0];
+        } catch (err) {
+            throw new Error(`Unable to delete user with id: ${id}. ${err}`);
         }
     }
 }

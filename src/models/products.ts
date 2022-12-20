@@ -38,9 +38,9 @@ export class ProductStore {
             const sql = 'SELECT * FROM products WHERE id = ($1)';
             const result = await conn.query(sql, [id]);
             conn.release();
-            if (result.rows.length < 1) {
-                throw new Error(`Product not found.`)
-            }
+//            if (result.rows.length < 1) {
+//                throw new Error(`Product not found.`)
+//            }
             return result.rows[0];
         } catch (err) {
             throw new Error(`Unable to fetch product with id ${id}. ${err}`);
@@ -59,6 +59,30 @@ export class ProductStore {
             return result.rows;
         } catch (err) {
             throw new Error(`Unable to fetch products under ${category} category. ${err}`);
+        }
+    }
+
+    async put(product: Product): Promise<Product> {
+        try {
+            const conn = await client.connect();
+            const sql = 'UPDATE products SET name=($1), price=($2), category=($3) WHERE id=($4)';
+            const result = await conn.query(sql, [product.name, product.price, product.category, product.id]);
+            conn.release();
+            return result.rows[0];
+        } catch (err) {
+            throw new Error(`Unable to update product: ${product.name}. Error: ${err}`);
+        }
+    }
+
+    async delete(id: number): Promise<Product> {
+        try {
+            const conn = await client.connect();
+            const sql = 'DELETE FROM products WHERE id=($1)';
+            const result = await conn.query(sql, [id]);
+            conn.release();
+            return result.rows[0];
+        } catch (err) {
+            throw new Error(`Unable to delete product with id ${id}. Error: ${err}`);
         }
     }
 }

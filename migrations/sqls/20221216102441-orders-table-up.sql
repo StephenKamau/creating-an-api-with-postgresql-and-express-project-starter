@@ -1,7 +1,7 @@
 CREATE TABLE orders(
     id SERIAL PRIMARY KEY,
-    productId BIGINT REFERENCES products(id),
+    productId INTEGER REFERENCES products(id),
     quantity INTEGER NOT NULL,
-    userId BIGINT REFERENCES users(id),
+    userId INTEGER REFERENCES users(id),
     orderStatus VARCHAR(50)
 );

@@ -8,22 +8,22 @@ These are the notes from a meeting with the frontend developer that describe wha
 
 ### Products
 
-- Index
-- Show
-- Create [token required]
+- Index : /products
+- Show : /products/:id
+- Create [token required] : /products
 - [OPTIONAL] Top 5 most popular products
-- [OPTIONAL] Products by category (args: product category)
+- [OPTIONAL] Products by category (args: product category) : /products/category/:category
 
 #### Users
 
-- Index [token required]
-- Show [token required]
-- Create N[token required]
+- Index [token required] : /users
+- Show [token required] : /users/:id
+- Create N[token required] : /users
 
 #### Orders
 
-- Current Order by user [args: user id](token required)
-- [OPTIONAL] Completed Orders by user [args: user id](token required)
+- Current Order by user [args: user id](token required) : /orders/:userid
+- [OPTIONAL] Completed Orders by user [args: user id](token required) /orders/:userid/:status
 
 ## Data Shapes
 
