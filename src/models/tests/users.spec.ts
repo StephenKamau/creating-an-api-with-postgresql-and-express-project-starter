@@ -25,13 +25,7 @@ describe('User model', () => {
       password: '123456',
       id: 0
     });
-    expect(result).toEqual({
-      email: 'sk@testmail.com',
-      firstname: 'Stephen',
-      lastname: 'K',
-      password: '',
-      id: 2
-    });
+    expect(result.email).toEqual('sk@testmail.com');
   });
   it('show method should return user with id 1', async () => {
     const id: number = 1;
@@ -62,7 +56,7 @@ describe('User model', () => {
     expect(deletedUser).toBeUndefined();
   });
   it('authenticate method should return authenticated user', async () => {
-    const email: string = 'sk1@testmail.com';
+    const email: string = 'sk@testmail.com';
     const password: string = '123456';
     const authenticated = await store.authenticate(email, password);
     expect(authenticated?.email).toEqual(email);
