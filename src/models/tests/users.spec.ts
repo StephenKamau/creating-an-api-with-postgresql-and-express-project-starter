@@ -19,12 +19,14 @@ describe('User model', () => {
   });
   it('create method should return a new user', async () => {
     const result = await store.create({
+      email: 'sk@testmail.com',
       firstname: 'Stephen',
       lastname: 'K',
       password: '123456',
       id: 0
     });
     expect(result).toEqual({
+      email: 'sk@testmail.com',
       firstname: 'Stephen',
       lastname: 'K',
       password: '',
@@ -42,9 +44,10 @@ describe('User model', () => {
   });
   it('put method should update the user details', async () => {
     const user: User = {
+      email: '',
       firstname: 'Test',
       lastname: 'User',
-      password: '123456',
+      password: '',
       id: 1
     };
     await store.put(user);
@@ -57,5 +60,11 @@ describe('User model', () => {
     await store.delete(id);
     const deletedUser = await store.show(id);
     expect(deletedUser).toBeUndefined();
+  });
+  it('authenticate method should return authenticated user', async () => {
+    const email: string = 'sk1@testmail.com';
+    const password: string = '123456';
+    const authenticated = await store.authenticate(email, password);
+    expect(authenticated?.email).toEqual(email);
   });
 });

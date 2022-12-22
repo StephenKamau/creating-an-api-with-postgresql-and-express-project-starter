@@ -29,6 +29,7 @@ const show = async (request: Request, response: Response): Promise<void> => {
 
 const create = async (request: Request, response: Response): Promise<void> => {
   const user: User = {
+    email: request.body.email,
     firstname: request.body.firstname,
     lastname: request.body.lastname,
     password: request.body.password,

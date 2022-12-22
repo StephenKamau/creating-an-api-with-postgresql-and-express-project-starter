@@ -9,6 +9,7 @@ describe('Orders model', () => {
     const userStore = new UserStore();
     const productStore = new ProductStore();
     await userStore.create({
+      email: 'sk1@testmail.com',
       firstname: 'Stephen',
       lastname: 'K',
       password: '123456',

@@ -1,7 +1,7 @@
-CREATE TABLE users
-(
-    id        SERIAL PRIMARY KEY,
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    email VARCHAR NOT NULL UNIQUE,
     firstname VARCHAR(100) NOT NULL,
-    lastname  VARCHAR(100) NOT NULL,
-    password  VARCHAR      NOT NULL
+    lastname VARCHAR(100) NOT NULL,
+    password VARCHAR NOT NULL
 );
