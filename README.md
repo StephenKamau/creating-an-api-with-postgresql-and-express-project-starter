@@ -4,6 +4,19 @@
 
 This repo contains a basic Node and Express app to get you started in constructing an API. To get started, clone this repo and run `yarn` in your terminal at the project root.
 
+- To test the project use `yarn test`
+- To start the project in watch mode use `yarn watch`
+- Update environment variables: 
+   - `POSTGRES_USERNAME=your username`
+   - `POSTGRES_PASSWORD=password`
+   - `POSTGRES_DB=database`
+   - `POSTGRES_TEST_DB=test database`
+   - `POSTGRES_HOST=host`
+   - `SALT=your salt`
+   - `SALT_ROUNDS=10`
+   - `ENV=dev`
+   - `TOKEN_SECRET=your secret`
+
 ## Required Technologies
 Your application must make use of the following libraries:
 - Postgres for the database
