@@ -1,18 +1,14 @@
 import client from '../database';
+import { Order_products } from './order_products';
 
 export interface Order {
   id: number;
-  productid: number;
-  quantity: number;
   userid: number;
   orderstatus: string;
 }
 
 export interface OrderQueryResult {
   id: number;
-  productid: number;
-  productname: string;
-  quantity: number;
   userid: number;
   firstname: string;
   lastname: string;
@@ -20,15 +16,15 @@ export interface OrderQueryResult {
 }
 
 export class OrderStore {
-  async currentOrder(userid: number): Promise<OrderQueryResult[]> {
+  async currentOrder(userid: number): Promise<OrderQueryResult> {
     try {
       const orderStatus: string = 'active';
       const conn = await client.connect();
       const sql =
-        'SELECT orders.id, productid, products.name "productname", quantity, userid, firstname, lastname, orderstatus FROM orders INNER JOIN users on orders.userid=users.id INNER JOIN products on orders.productid=products.id WHERE orderStatus=($1) and userid=($2) ORDER BY orders.id DESC';
+        'SELECT orders.id, userid, firstname, lastname, orderstatus FROM orders INNER JOIN users on orders.userid=users.id WHERE orderStatus=($1) and userid=($2) ORDER BY orders.id DESC LIMIT 1';
       const result = await conn.query(sql, [orderStatus, userid]);
       conn.release();
-      return result.rows;
+      return result.rows[0];
     } catch (err) {
       throw new Error(`Unable to fetch list of orders. ${err}`);
     }
@@ -41,7 +37,7 @@ export class OrderStore {
     try {
       const conn = await client.connect();
       const sql =
-        'SELECT orders.id, productid, products.name "productname", quantity, userid, firstname, lastname, orderstatus FROM orders INNER JOIN users on orders.userid=users.id INNER JOIN products on orders.productid=products.id WHERE orderStatus=($1) and userid=($2)';
+        'SELECT orders.id, userid, firstname, lastname, orderstatus FROM orders INNER JOIN users on orders.userid=users.id WHERE orderStatus=($1) and userid=($2)';
       const result = await conn.query(sql, [orderStatus, userid]);
       conn.release();
       return result.rows;
@@ -54,7 +50,7 @@ export class OrderStore {
     try {
       const conn = await client.connect();
       const sql =
-        'SELECT orders.id, productid, products.name "productname", quantity, userid, firstname, lastname, orderstatus FROM orders INNER JOIN users on orders.userid=users.id INNER JOIN products on orders.productid=products.id';
+        'SELECT orders.id, userid, firstname, lastname, orderstatus FROM orders INNER JOIN users on orders.userid=users.id';
       const result = await conn.query(sql);
       conn.release();
       return result.rows;
@@ -67,13 +63,8 @@ export class OrderStore {
     try {
       const conn = await client.connect();
       const sql =
-        'INSERT INTO orders (productid,quantity,userid,orderstatus) VALUES($1,$2,$3,$4) RETURNING *';
-      const result = await conn.query(sql, [
-        order.productid,
-        order.quantity,
-        order.userid,
-        order.orderstatus
-      ]);
+        'INSERT INTO orders (userid,orderstatus) VALUES($1,$2) RETURNING *';
+      const result = await conn.query(sql, [order.userid, order.orderstatus]);
       conn.release();
       return result.rows[0];
     } catch (err) {
@@ -85,10 +76,8 @@ export class OrderStore {
     try {
       const conn = await client.connect();
       const sql =
-        'UPDATE orders SET productid=($1), quantity=($2), userid=($3), orderstatus=($4) WHERE id=($5)';
+        'UPDATE orders SET userid=($1), orderstatus=($2) WHERE id=($3)';
       const result = await conn.query(sql, [
-        order.productid,
-        order.quantity,
         order.userid,
         order.orderstatus,
         order.id
@@ -121,6 +110,22 @@ export class OrderStore {
       return result.rows[0];
     } catch (err) {
       throw new Error(`Unable to fetch order with id ${id}. ${err}`);
+    }
+  }
+
+  async addProduct(orderProduct: Order_products): Promise<Order_products> {
+    try {
+      const conn = await client.connect();
+      const sql =
+        'INSERT INTO orders_products(orderid, productid, quantity) VALUES ($1, $2, $3) RETURNING *';
+      const result = await conn.query(sql, [
+        orderProduct.orderid,
+        orderProduct.productid,
+        orderProduct.quantity
+      ]);
+      return result.rows[0];
+    } catch (err) {
+      throw new Error(`Could not add product. ${err}`);
     }
   }
 }

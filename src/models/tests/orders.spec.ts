@@ -1,6 +1,7 @@
 import { OrderStore, Order } from '../orders';
 import { UserStore } from '../users';
 import { ProductStore } from '../products';
+import { Order_products } from '../order_products';
 
 const store = new OrderStore();
 
@@ -37,38 +38,23 @@ describe('Orders model', () => {
   it('create method should return a new order', async () => {
     const order: Order = {
       id: 1,
-      productid: 1,
-      quantity: 1,
       userid: 1,
       orderstatus: 'active'
     };
     const createdOrder = await store.create(order);
-    expect(createdOrder).toEqual(order);
+    expect(createdOrder.userid).toEqual(order.userid);
   });
   it('index method should return a list of orders', async () => {
     const orders = await store.index();
     expect(orders.length).toBeGreaterThanOrEqual(1);
   });
-  it('currentOrder should return active order for the user id provided', async () => {
+  it('currentOrder method should return active order for the user id provided', async () => {
     const currentOrder = await store.currentOrder(1);
-    expect(currentOrder).toEqual([
-      {
-        id: 1,
-        productid: 1,
-        productname: 'Test product',
-        quantity: 1,
-        userid: 1,
-        firstname: 'Stephen',
-        lastname: 'K',
-        orderstatus: 'active'
-      }
-    ]);
+    expect(currentOrder.userid).toEqual(1);
   });
   it('put method should return an updated order', async () => {
     const order: Order = {
-      id: 1,
-      productid: 1,
-      quantity: 1,
+      id: 2,
       userid: 1,
       orderstatus: 'completed'
     };
@@ -83,15 +69,12 @@ describe('Orders model', () => {
     expect(result.length).toBeGreaterThanOrEqual(1);
   });
   it('show method should return order with id provided', async () => {
-    const id = 1;
     const order: Order = {
-      id: 1,
-      productid: 1,
-      quantity: 1,
+      id: 2,
       userid: 1,
       orderstatus: 'completed'
     };
-    const result = await store.show(id);
+    const result = await store.show(order.id);
     expect(result).toEqual(order);
   });
   it('delete method should drop the order with id provided', async () => {
@@ -99,5 +82,22 @@ describe('Orders model', () => {
     await store.delete(id);
     const fetchDeletedOrder = await store.show(id);
     expect(fetchDeletedOrder).toBeUndefined();
+  });
+
+  it('add product method should add the product to the join table', async () => {
+    const orderProduct: Order_products = {
+      id: 0,
+      orderid: 2,
+      productid: 1,
+      quantity: 2
+    };
+    const order: Order = {
+      id: 0,
+      userid: 1,
+      orderstatus: 'active'
+    };
+    await store.create(order);
+    const result = await store.addProduct(orderProduct);
+    expect(result.orderid).toEqual(orderProduct.orderid);
   });
 });

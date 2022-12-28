@@ -1,11 +1,9 @@
 import supertest from 'supertest';
 import { Product } from '../../models/products';
 import app from '../../server';
+import { authorization } from './orders.spec';
 
 const request = supertest(app);
-const authorization =
-  'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjcmVhdGVkVXNlciI6eyJpZCI6MywiZW1haWwiOiJzazFAbXlzdG9yZS5jb20iLCJmaXJzdG5hbWUiOiJTdGVwaGVuIiwibGFzdG5hbWUiOiJLIiwicGFzc3dvcmQiOiIifSwiaWF0IjoxNjcxNzE0MDUyfQ.MAe_vav48ym8pN61mYl6x1ynmIWVncHjOHSqZ2QfnjY';
-
 describe('Products handler', () => {
   it('create method should return a new product', async () => {
     const product: Product = {
@@ -17,7 +15,7 @@ describe('Products handler', () => {
     const response = await request
       .post('/products')
       .send(product)
-      .set('Authorization', authorization);
+      .set('Authorization', await authorization('sk10@mystore.com'));
     expect(response.body.name).toEqual(product.name);
   });
   it('index method should return a list of products', async () => {

@@ -8,22 +8,24 @@ These are the notes from a meeting with the frontend developer that describe wha
 
 ### Products
 
-- Index : GET /products
-- Show : GET /products/:id
-- Create [token required] : POST /products
+- Index : `GET /products`
+- Show : `GET /products/:id`
+- Create [token required] : `POST /products`
 - [OPTIONAL] Top 5 most popular products
-- [OPTIONAL] Products by category (args: product category) : GET /products/category/:category
+- [OPTIONAL] Products by category (args: product category) : `GET /products/category/:category`
 
 #### Users
 
-- Index [token required] : GET /users
-- Show [token required] : GET /users/:id
-- Create N[token required] : POST /users
+- Index [token required] : `GET /users`
+- Show [token required] : `GET /users/:id`
+- Create N[token required] : `POST /users`
 
 #### Orders
 
-- Current Order by user [args: user id](token required) : GET /orders/:userid
-- [OPTIONAL] Completed Orders by user [args: user id](token required): GET /orders/completed/:userId
+- Current Order by user [args: user id](token required) : `GET /orders/:userid`
+- [OPTIONAL] Completed Orders by user [args: user id](token required): `GET /orders/completed/:userId`
+- Create order [args: user id, product id](token required): `POST /orders/:userId`
+- Add products to order [args: order id](token required): `POST /orders/:orderId/products`
 
 ## Data Shapes
 

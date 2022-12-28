@@ -3,6 +3,7 @@ import app from '../../server';
 import bodyParser from 'body-parser';
 import jwt from 'jsonwebtoken';
 import { User } from '../../models/users';
+import { authorization } from './orders.spec';
 
 app.use(bodyParser);
 const request = supertest(app);
@@ -37,11 +38,9 @@ describe('User Handler', () => {
     expect(response.status).toBe(200);
   });
   it('show method should return user with param id', async () => {
-    const authorization =
-      'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjcmVhdGVkVXNlciI6eyJpZCI6MywiZW1haWwiOiJzazFAbXlzdG9yZS5jb20iLCJmaXJzdG5hbWUiOiJTdGVwaGVuIiwibGFzdG5hbWUiOiJLIiwicGFzc3dvcmQiOiIifSwiaWF0IjoxNjcxNzE0MDUyfQ.MAe_vav48ym8pN61mYl6x1ynmIWVncHjOHSqZ2QfnjY';
     const response = await request
       .get('/users/1')
-      .set('Authorization', authorization);
-    expect(response.body.email).toEqual('sk2@mystore.com');
+      .set('Authorization', await authorization('sk30@mystore.com'));
+    expect(response.body.id).toEqual(1);
   });
 });
