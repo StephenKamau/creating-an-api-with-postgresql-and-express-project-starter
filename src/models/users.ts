@@ -107,9 +107,9 @@ export class UserStore {
       const sql =
         'SELECT id, email, firstname,lastname, password FROM users WHERE email=($1) ';
       const result = await conn.query(sql, [email]);
-      if (result.rows.length) {
+      if (result.rows.length > 0) {
         const user = result.rows[0];
-        if (bcrypt.compareSync(password + SALT, user.password)) {
+        if (bcrypt.compareSync(`${password}${SALT}`, user.password)) {
           user.password = '';
           return user;
         }

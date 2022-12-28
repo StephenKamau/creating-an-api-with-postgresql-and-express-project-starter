@@ -22,13 +22,13 @@ describe('Product model', () => {
   });
   it('create method should return a new product', async () => {
     const product: Product = {
-      id: 2,
+      id: 3,
       name: 'Test product',
       price: 20,
       category: 'Test'
     };
     const newProduct = await store.create(product);
-    expect(newProduct).toEqual(product);
+    expect(newProduct.name).toEqual(product.name);
   });
   it('index method should return a list of products', async () => {
     const products: Product[] = await store.index();

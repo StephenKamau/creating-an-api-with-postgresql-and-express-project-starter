@@ -26,15 +26,15 @@ const currentOrder = async (req: Request, res: Response): Promise<void> => {
   }
 };
 const completeOrders = async (req: Request, res: Response): Promise<void> => {
-   try {
-     const authorizationHeader: string = req.headers.authorization!;
-     const token: string = authorizationHeader.split(' ')[1];
-     jwt.verify(token, process.env.TOKEN_SECRET!);
-   } catch (err: any) {
-     res.status(401);
-     res.json({ error: err.message });
-     return;
-   }
+  try {
+    const authorizationHeader: string = req.headers.authorization!;
+    const token: string = authorizationHeader.split(' ')[1];
+    jwt.verify(token, process.env.TOKEN_SECRET!);
+  } catch (err: any) {
+    res.status(401);
+    res.json({ error: err.message });
+    return;
+  }
   try {
     const userId = parseInt(req.params.userId);
     const orderStatus = 'complete';
@@ -52,15 +52,15 @@ const completeOrders = async (req: Request, res: Response): Promise<void> => {
 };
 
 const create = async (req: Request, res: Response): Promise<void> => {
-   try {
-     const authorizationHeader: string = req.headers.authorization!;
-     const token: string = authorizationHeader.split(' ')[1];
-     jwt.verify(token, process.env.TOKEN_SECRET!);
-   } catch (err: any) {
-     res.status(401);
-     res.json({ error: err.message });
-     return;
-   }
+  try {
+    const authorizationHeader: string = req.headers.authorization!;
+    const token: string = authorizationHeader.split(' ')[1];
+    jwt.verify(token, process.env.TOKEN_SECRET!);
+  } catch (err: any) {
+    res.status(401);
+    res.json({ error: err.message });
+    return;
+  }
   try {
     const order: Order = {
       productid: parseInt(req.params.productId),

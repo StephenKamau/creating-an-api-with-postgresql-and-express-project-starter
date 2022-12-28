@@ -1,7 +1,6 @@
 import express, { Request, Response } from 'express';
 import { User, UserStore } from '../models/users';
 import jwt from 'jsonwebtoken';
-import verifyAuthToken from '../server';
 
 const store = new UserStore();
 const index = async (request: Request, response: Response): Promise<void> => {
@@ -58,7 +57,7 @@ const create = async (request: Request, response: Response): Promise<void> => {
     };
     const createdUser: User = await store.create(user);
     response.status(201);
-    const token = jwt.sign({ createdUser }, process.env.TOKEN_SECRET!);
+    const token = jwt.sign(createdUser, process.env.TOKEN_SECRET!);
     response.json(token);
   } catch (
     err: any // error can be of unknown type hence any used
@@ -78,12 +77,12 @@ const authenticate = async (
     const authUser = await store.authenticate(email, password);
     if (authUser == null) {
       throw new Error(
-        `Unable to authenticate user with the credentials provided.`
+        'Unable to authenticate user with the credentials provided.'
       );
     }
-    const token = jwt.sign({ authUser }, process.env.TOKEN_SECRET!);
+    const token = jwt.sign(authUser, process.env.TOKEN_SECRET!);
     response.status(200);
-    response.json(token);
+    response.json({ token });
   } catch (
     err: any // error can be of unknown type hence any used
   ) {
