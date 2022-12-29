@@ -78,7 +78,7 @@ describe('Orders model', () => {
     expect(result).toEqual(order);
   });
   it('delete method should drop the order with id provided', async () => {
-    const id = 1;
+    const id = 2;
     await store.delete(id);
     const fetchDeletedOrder = await store.show(id);
     expect(fetchDeletedOrder).toBeUndefined();
@@ -87,7 +87,7 @@ describe('Orders model', () => {
   it('add product method should add the product to the join table', async () => {
     const orderProduct: Order_products = {
       id: 0,
-      orderid: 2,
+      orderid: 1,
       productid: 1,
       quantity: 2
     };

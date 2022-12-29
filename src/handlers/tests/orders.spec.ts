@@ -1,6 +1,8 @@
 import supertest from 'supertest';
 import app from '../../server';
 import { Order } from '../../models/orders';
+import { Order_products } from '../../models/order_products';
+import { Product } from '../../models/products';
 
 const request = supertest(app);
 export const authorization = async (email: string): Promise<string> => {
@@ -43,15 +45,22 @@ describe('Orders handler', () => {
     expect(response.status).toEqual(201);
     expect(response.body.userid).toEqual(data.userid);
   });
-  // it('add product method should return Order product', async () => {
-  //   const data: Order_products = {
-  //     id: 0,
-  //     orderid: 2,
-  //     productid: 1,
-  //     quantity: 2
-  //   };
-  //   const response = await request.post(`/orders/${data.orderid}/products`).send(data).set('Authorization', authorization);
-  //   expect(response.status).toEqual(201);
-  //   expect(response.body.productid).toEqual(data.productid);
-  // });
+  it('add product method should return Order product', async () => {
+    const product: Product = {
+      name: 'Test product',
+      category: 'Test',
+      price: 20,
+      id: 0
+    };
+    const createdProduct = (await request.post('/products').send(product).set('Authorization', await authorization('sk45@mystore.com'))).body;
+    const data: Order_products = {
+      id: 0,
+      orderid: 1,
+      productid: createdProduct.id,
+      quantity: 2
+    };
+    const response = await request.post(`/orders/${data.orderid}/products`).send(data).set('Authorization', await authorization('sk40@mystore.com'));
+    expect(response.status).toEqual(201);
+    expect(response.body.productid).toEqual(data.productid);
+  });
 });
