@@ -1,8 +1,12 @@
 # API Requirements
 
-The company stakeholders want to create an online storefront to showcase their great product ideas. Users need to be able to browse an index of all products, see the specifics of a single product, and add products to an order that they can view in a cart page. You have been tasked with building the API that will support this application, and your coworker is building the frontend.
+The company stakeholders want to create an online storefront to showcase their great product ideas. Users need to be
+able to browse an index of all products, see the specifics of a single product, and add products to an order that they
+can view in a cart page. You have been tasked with building the API that will support this application, and your
+coworker is building the frontend.
 
-These are the notes from a meeting with the frontend developer that describe what endpoints the API needs to supply, as well as data shapes the frontend and backend have agreed meet the requirements of the application.
+These are the notes from a meeting with the frontend developer that describe what endpoints the API needs to supply, as
+well as data shapes the frontend and backend have agreed meet the requirements of the application.
 
 ## API Endpoints
 
@@ -36,12 +40,31 @@ These are the notes from a meeting with the frontend developer that describe wha
 - price
 - [OPTIONAL] category
 
+###### Table schema
+
+|  Column  | Data type |            Description            |
+|:--------:|:---------:|:---------------------------------:|
+|    id    | [INTEGER] | Unique identifier for the product |
+|   name   | [VARCHAR] |           Product name            |
+|  price   | [INTEGER] |    Unit price for the product     |
+| category | [VARCHAR] |         Product category          |
+
 #### User
 
 - id
 - firstName
 - lastName
 - password
+
+###### Table schema
+
+|  Column   | Data type |          Description           |
+|:---------:|:---------:|:------------------------------:|
+|    id     | [INTEGER] | Unique identifier for the user |
+|   email   | [VARCHAR] |           User email           |
+| firstname | [VARCHAR] |        User's firstname        |
+| lastname  | [VARCHAR] |        User's lastname         |
+| password  | [VARCHAR] |     User's hashed password     |
 
 #### Orders
 
@@ -50,3 +73,28 @@ These are the notes from a meeting with the frontend developer that describe wha
 - quantity of each product in the order
 - user_id
 - status of order (active or complete)
+
+###### Table schema
+
+|   Column    | Data type |               Description                |
+|:-----------:|:---------:|:----------------------------------------:|
+|     id      | [INTEGER] |     Unique identifier for the order      |
+|   userid    | [INTEGER] |  Foreign key to link an order to a user  |
+| orderstatus | [VARCHAR] | Status of the order (active or complete) |
+
+#### Orders_Products
+
+- id
+- orderid of each product in the order
+- quantity of each product in the order
+- productid
+- quantity of order
+
+###### Table schema
+
+|  Column   | Data type |                      Description                      |
+|:---------:|:---------:|:-----------------------------------------------------:|
+|    id     | [INTEGER] |        Unique identifier for the order product        |
+|  orderid  | [INTEGER] |   Foreign key to link an order product to an order    |
+| productid | [INTEGER] |   Foreign key to link an order product to products    |
+| quantity  | [INTEGER] | Quantity of the individual product linked to an order |
